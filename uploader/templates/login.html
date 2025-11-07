@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .login-box h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-group input {
+            width: 85%;
+            padding: 12px;
+            padding-left: 40px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #1abc9c;
+            box-shadow: 0px 0px 6px rgba(26, 188, 156, 0.4);
+        }
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #7f8c8d;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1abc9c;
+            border: none;
+            color: #fff;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #16a085;
+        }
+        
+        img{
+            height: auto;
+            width: 150px;
+        }
+        .error-message, .success-message {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-align: center;
+            border: 1px solid transparent;
+        }
+
+        .error-message {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #c0392b;
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+
+    </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="login-box">
+        <img src="https://cxstrategy.in/img/partners/iccs.png">
+        <h2>Disposition Portal</h2>
+        {% if error %}<p class="error-message">{{ error }}</p>{% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group">
+                <i class="fas fa-user"></i>
+                <input type="text" name="username" placeholder="Username" required>
+            </div>
+            <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>

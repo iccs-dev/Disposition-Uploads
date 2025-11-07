@@ -1,0 +1,315 @@
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.25);
+            width: 100%;
+            max-width: 1650px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 90vh;
+            overflow: hidden;
+        }
+        .logout {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logout a {
+            color: white;
+            background: #e74c3c;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .logout a:hover {
+            background: #c0392b;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 20px;
+        }
+        input[type="file"] {
+            flex: 2;
+            padding: 8px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+        button {
+            flex: 1;
+            padding: 10px;
+            background: #1abc9c;
+            border: none;
+            color: #fff;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        button:hover {
+            background: #16a085;
+        }
+        .format-download {
+            flex: 1;
+            padding: 10px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            margin-left: 10px;
+            transition: 0.3s;
+        }
+        .format-download:hover {
+            background: #2980b9;
+        }
+        .file-list {
+            margin-top: 20px;
+            text-align: left;
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: 80vh;
+        }
+        .file-list::-webkit-scrollbar {
+            display: none;
+        }
+        .file-list {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ecf0f1;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background: #1abc9c;
+            color: white;
+        }
+        .download-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #27ae60;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .download-btn:hover {
+            background: #1e8449;
+        }
+        .message, .error {
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-align: center;
+            border: 1px solid transparent;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .message {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-color: rgba(46, 204, 113, 0.3);
+        }
+
+        .error {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #c0392b;
+            border-color: rgba(231, 76, 60, 0.3);
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .profile-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .username {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .profile:hover .username {
+            opacity: 1;
+            visibility: visible;
+        }
+        select[name="process"] {
+            flex: 1;
+            margin-right: 10px;
+            padding: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+            background: #fff;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        select[name="process"]:hover {
+            border-color: #1abc9c;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logout">
+            <div class="profile">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="8" r="4" stroke="#333" stroke-width="2" fill="#ccc"/>
+                    <path d="M4 20c0-4 4-7 8-7s8 3 8 7" stroke="#333" stroke-width="2" fill="none"/>
+                </svg>
+                <span class="username">{{ user.username }}</span>
+            </div>
+            <a href="{% url 'logout' %}">Logout</a>
+        </div>
+        <h2>Upload a File</h2>
+        {% if message %}
+            <p class="message">{{ message }}</p>
+        {% endif %}
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <select name="process" required>
+                    <option value="" disabled selected>Select Process</option>
+                    {% for option in process_options %}
+                        <option value="{{ option }}">{{ option }}</option>
+                    {% endfor %}
+                </select>
+                <input type="file" name="file" required>
+                <button type="submit">Upload</button>
+                <a id="downloadFormat" class="format-download" href="#" onclick="return false;" style="pointer-events: none; opacity: 0.6;">Download Format</a>
+            </div>
+        </form>
+        <div class="file-list">
+            <h3>Uploaded Files</h3>
+            <table>
+                <tr>
+                    <th>File Name</th>
+                    <th>Process</th>
+                    <th>Uploaded At</th>
+                    <th>Download</th>
+                </tr>
+                {% for file in files %}
+                    <tr>
+                        <td>{{ file.file.name }}</td>
+                        <td>{{ file.process }}</td>
+                        <td>{{ file.uploaded_at|date:"d-m-Y H:i:s" }}</td>
+                        <td><a href="{{ file.file.url }}" download class="download-btn">Download</a></td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2" style="text-align:center;">No files uploaded yet.</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    const processDropdown = document.querySelector('select[name="process"]');
+    const downloadLink = document.getElementById('downloadFormat');
+
+    processDropdown.addEventListener('change', function () {
+        const selected = this.value;
+        if (selected) {
+            downloadLink.href = `/media/reference/${selected}/format.xlsx`;
+            downloadLink.style.pointerEvents = "auto";
+            downloadLink.style.opacity = "1";
+            downloadLink.setAttribute("onclick", "");
+        } else {
+            downloadLink.href = "#";
+            downloadLink.style.pointerEvents = "none";
+            downloadLink.style.opacity = "0.6";
+            downloadLink.setAttribute("onclick", "return false;");
+        }
+    });
+
+    // Auto-hide messages
+    setTimeout(function () {
+        var messages = document.querySelectorAll('.message, .error');
+        messages.forEach(function (msg) {
+            msg.style.transition = "opacity 0.5s";
+            msg.style.opacity = "0";
+            setTimeout(() => msg.remove(), 500);
+        });
+    }, 5000);
+</script>
+
+</html>

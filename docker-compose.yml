@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  web:
+    build: .
+    ports:
+      - "8540:8540"
+    environment:
+      - DEBUG=False
+    volumes:
+      - .:/app
+      - ./media:/media  # Mount media folder properly
+      - /home/iccsadmin/Disposition_Portal_Data:/Disposition_Portal_Data
+    restart: always
