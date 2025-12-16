@@ -69,6 +69,30 @@ def upload_file(request):
                     else:
                         message = "File uploaded and cleaned successfully!"
                         logging.info("Clean successful - about to copy cleaned file")
+
+                        try:
+                            # Extract Raw Date from cleaned file (to track which date’s data was uploaded)
+                            df = pd.read_csv(cleaned_file_path)
+                            if 'Raw Date' in df.columns:
+                                raw_dates = df['Raw Date'].dropna().unique()
+                                for date_str in raw_dates:
+                                    try:
+                                        parsed_date = pd.to_datetime(date_str, format='%d-%m-%Y').date()
+                                        # Update or create status entry
+                                        UploadStatus.objects.update_or_create(
+                                            process=selected_process,
+                                            date=parsed_date,
+                                            defaults={
+                                                'status': 'Uploaded',
+                                                'uploaded_file': uploaded_file_instance
+                                            }
+                                        )
+                                    except Exception as e:
+                                        logging.error(f"Invalid Raw Date '{date_str}' for process {selected_process}: {e}")
+                        except Exception as e:
+                            logging.error(f"Could not read cleaned file for status tracking: {e}")
+
+
                         logging.info(f"cleaned_file_path: {cleaned_file_path}")
                         
 

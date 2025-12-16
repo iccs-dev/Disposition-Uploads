@@ -13,3 +13,30 @@ class UploadedFile(models.Model):
 
     def __str__(self):
         return f"{self.process} - {self.file.name}"
+
+class UploadStatus(models.Model):
+    process = models.CharField(max_length=100)
+    date = models.DateField()
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Uploaded', 'Uploaded'),
+            ('Missing', 'Missing')
+        ],
+        default='Missing'
+    )
+    uploaded_file = models.ForeignKey(
+        'UploadedFile',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='status_entries'
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('process', 'date')  # ensure one record per process/date
+        ordering = ['-date']
+
+    def __str__(self):
+        return f"{self.date} - {self.process}: {self.status}"
