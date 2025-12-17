@@ -11,7 +11,7 @@ Go Noise IB,Customer Hold Duration,Customer Hold Duration,Call Time,Go_Noise_IB
 Go Noise OB,call_talktime,call_talktime,call_start_time,Go_Noise_OB
 HDFC,lead_Attempt,lead_Attempt,Date,HDFC
 JIO,Duration,Duration,Date,JIO
-MOT,Total Talktime,Total Talktime,Date Time,MOT
+MOT,Talk Time,Talk Time,Start Time,MOT
 Qurex,Duration,Duration,Date,Qurex
 RBI,Duration,Duration,Call Start Time,RBI
 S C JOHNSON,Total Talktime,Total Talktime,Date Time,S_C_JOHNSON
