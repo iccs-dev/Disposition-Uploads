@@ -20,3 +20,4 @@ Unicef,Duration,Duration,Date,Unicef
 ZET Inbound,Duration,Duration,Date,ZET_Inbound
 ZET Inbound Partner,Duration,Duration,Date,ZET_Inbound_Partner
 ZET Outbound,Duration,Duration,Date,ZET_Outbound
+JVVNL_CDR,Hold Duration,Hold Duration,IVRS Hit Time,JVVNL_CDR
